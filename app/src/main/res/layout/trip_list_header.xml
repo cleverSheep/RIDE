@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:background="@drawable/trip_list_header_background"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/trips_list_header_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:text="08/22"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/trips_list_header_number_trips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:gravity="center"
+        android:text="6"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</LinearLayout>
