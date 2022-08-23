@@ -1,17 +1,16 @@
-package com.product.ridecheck
+package com.product.ridecheck.main
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.ViewCompat
 import com.google.android.material.button.MaterialButton
+import com.product.ridecheck.R
 
-class TripList(context: Context) : LinearLayout(context) {
+class TripListView(context: Context) : LinearLayout(context) {
     private var tripListHeader = TripListHeader(context)
 
     init {
@@ -33,13 +32,13 @@ class TripList(context: Context) : LinearLayout(context) {
     fun bindTripData(
         date: String,
         numTrips: String,
-        tripStops: List<TripStop> = emptyList()
+        tripStops: List<TripStopItem>? = emptyList()
     ) {
         removeAllViews()
         tripListHeader.setDate(date)
         tripListHeader.setNumberTrips(numTrips)
         addView(tripListHeader)
-        tripStops.forEach { tripStop ->
+        tripStops?.forEach { tripStop ->
             addView(TripListStop.create(context, tripStop))
         }
     }
@@ -87,13 +86,13 @@ class TripListStop(context: Context) : ConstraintLayout(context) {
     }
 
     companion object {
-        fun create(context: Context, data: TripStop) = TripListStop(context).apply {
-            tripListStopHeader.text = data.header
+        fun create(context: Context, data: TripStopItem) = TripListStop(context).apply {
+            tripListStopHeader.text = data.title
             tripListStopButton.setOnClickListener {
-                data.onClick?.invoke(it)
+                data.onClick?.invoke()
             }
         }
     }
 }
 
-data class TripStop(val header: String, val onClick: ((View?) -> Unit)?)
+data class TripStopItem(val title: String, val onClick: (() -> Unit)?)

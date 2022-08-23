@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/bus_number"
+        app:layout_constraintEnd_toEndOf="@id/bus_number"
+        app:layout_constraintStart_toStartOf="@id/bus_number"
+        tools:text="e pleasant view dr / indianola ave, dsm" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/bus_number"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:hint="Bus Number"
+        android:textColorHint="@color/black"
+        app:boxStrokeColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/arrival"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:layout_editor_absoluteX="24dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bus_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/arrival"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toTopOf="@+id/alighting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bus_number">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_weight="0.8"
+            android:hint="Arrival Time"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            tools:layout_editor_absoluteX="24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/arrival_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/arrival_time_picker"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="2dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="0.2"
+            android:background="@drawable/clock_img_background"
+            android:backgroundTint="#193E6E"
+            android:src="@drawable/ic_baseline_access_time_24" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alighting"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toTopOf="@+id/boarded"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrival">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_weight="0.6"
+            android:hint="Alighting"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/alighting_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/alighting_remove"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="2dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="0.2"
+            android:background="@drawable/clock_img_background"
+            android:backgroundTint="#193E6E"
+            android:src="@drawable/ic_baseline_remove_24" />
+
+        <ImageButton
+            android:id="@+id/alighting_add"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="2dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="0.2"
+            android:background="@drawable/clock_img_background"
+            android:backgroundTint="#193E6E"
+            android:src="@drawable/ic_baseline_add_24" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/boarded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toTopOf="@+id/departure"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alighting">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_weight="0.6"
+            android:hint="Boarded"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/boarded_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/boarded_remove"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="2dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="0.2"
+            android:background="@drawable/clock_img_background"
+            android:backgroundTint="#193E6E"
+            android:src="@drawable/ic_baseline_remove_24" />
+
+        <ImageButton
+            android:id="@+id/boarded_add"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="2dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="0.2"
+            android:background="@drawable/clock_img_background"
+            android:backgroundTint="#193E6E"
+            android:src="@drawable/ic_baseline_add_24" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/departure"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toTopOf="@+id/comments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boarded">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_weight="0.8"
+            android:hint="Departure Time"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/departure_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/departure_time_picker"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="2dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="0.2"
+            android:background="@drawable/clock_img_background"
+            android:backgroundTint="#193E6E"
+            android:src="@drawable/ic_baseline_access_time_24" />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/comments"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:hint="Comments"
+        android:textColorHint="@color/black"
+        app:boxStrokeColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departure"
+        tools:layout_editor_absoluteX="24dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/comments_route"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
