@@ -1,6 +1,7 @@
 package com.product.ridecheck.main
 
 import android.content.Context
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -10,12 +11,31 @@ import androidx.core.view.ViewCompat
 import com.google.android.material.button.MaterialButton
 import com.product.ridecheck.R
 
-class TripListView(context: Context) : LinearLayout(context) {
-    private var tripListHeader = TripListHeader(context)
+class TripListView : LinearLayout {
+    private var tripListHeader: TripListHeader
 
-    init {
+    constructor(context: Context) : super(context) {
+        tripListHeader = TripListHeader(context)
+        initializeView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        tripListHeader = TripListHeader(context)
+        initializeView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        tripListHeader = TripListHeader(context)
+        initializeView()
+    }
+
+    private fun initializeView() {
         layoutParams =
-            Constraints.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            Constraints.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         orientation = VERTICAL
         setBackgroundResource(R.drawable.trip_list_background)
         elevation = 8f
@@ -44,11 +64,27 @@ class TripListView(context: Context) : LinearLayout(context) {
     }
 }
 
-class TripListHeader(context: Context) : LinearLayout(context) {
-    private var tripsListHeaderDate: TextView
-    private var tripsListHeaderNumTrips: TextView
+class TripListHeader : LinearLayout {
+    private lateinit var tripsListHeaderDate: TextView
+    private lateinit var tripsListHeaderNumTrips: TextView
 
-    init {
+    constructor(context: Context) : super(context) {
+        initializeView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        initializeView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        initializeView()
+    }
+
+    private fun initializeView() {
         LayoutInflater.from(context).inflate(
             R.layout.trip_list_header,
             this,
@@ -68,11 +104,27 @@ class TripListHeader(context: Context) : LinearLayout(context) {
     }
 }
 
-class TripListStop(context: Context) : ConstraintLayout(context) {
-    private var tripListStopHeader: TextView
-    private var tripListStopButton: MaterialButton
+class TripListStop : ConstraintLayout {
+    private lateinit var tripListStopHeader: TextView
+    private lateinit var tripListStopButton: MaterialButton
 
-    init {
+    constructor(context: Context) : super(context) {
+        initializeView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        initializeView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        initializeView()
+    }
+
+    private fun initializeView() {
         LayoutInflater.from(context).inflate(
             R.layout.trip_list_stop,
             this,

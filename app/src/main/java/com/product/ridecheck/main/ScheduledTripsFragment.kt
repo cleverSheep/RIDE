@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.product.ridecheck.R
@@ -18,7 +20,8 @@ import com.product.ridecheck.viewmodels.TripsViewModel
 import org.json.JSONObject
 
 class ScheduledTripsFragment : Fragment() {
-    private lateinit var scheduledTrips: TripListView
+    private lateinit var listOfTrips: LinearLayout
+    private lateinit var scroll: NestedScrollView
     private lateinit var tripsViewModel: TripsViewModel
 
     override fun onCreateView(
@@ -31,10 +34,11 @@ class ScheduledTripsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scheduledTrips = TripListView(activity as Context)
+        listOfTrips = view.findViewById(R.id.trips)
+        scroll = view.findViewById(R.id.nested_scroll)
         tripsViewModel = ViewModelProvider(this)[TripsViewModel::class.java]
         tripsViewModel.getScheduledTrips(
-            authorization = "",
+            authorization = Utils.AUTH_CODE,
             command = "ridecheck.getscheduledtrips",
             data = JSONObject().put("timestamp", "")
         )
@@ -74,6 +78,7 @@ class ScheduledTripsFragment : Fragment() {
         val intent = Intent(activity, TabbedActivity::class.java)
         intent.putExtra("trip_id", "${tripResponse.sampleId}")
         intent.putExtra("trip_stop_size", tripResponse.stops?.size)
+        val scheduledTrips = TripListView(activity as Context)
         val stops = tripStops?.map {
             TripStopItem(
                 title = resources.getString(
@@ -89,11 +94,15 @@ class ScheduledTripsFragment : Fragment() {
             numTrips = tripResponse.stops?.size.toString(),
             tripStops = stops
         )
+        listOfTrips.addView(scheduledTrips)
     }
 
     private fun editedStopData(routeStop: TripStopForm?): Boolean {
+        if (routeStop == null) {
+            return false
+        }
         routeStop.let {
-            if (it!!.arrivalTime != ""
+            if (it.arrivalTime != ""
                 || it.departureTime != ""
                 || it.alighting != 0
                 || it.boarded != 0

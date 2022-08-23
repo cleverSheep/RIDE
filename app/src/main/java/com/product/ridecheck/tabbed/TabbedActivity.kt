@@ -13,10 +13,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.product.ridecheck.R
 import com.product.ridecheck.TripStopForm
 import com.product.ridecheck.Utils
+import com.product.ridecheck.Utils.Companion.toNumericVersion
 import com.product.ridecheck.main.MainActivity
 import com.product.ridecheck.viewmodels.TripsViewModel
-import org.json.JSONArray
-import org.json.JSONObject
 
 class TabbedActivity : FragmentActivity() {
 
@@ -58,16 +57,16 @@ class TabbedActivity : FragmentActivity() {
     private fun setClickListener() {
         nextButton.setOnClickListener {
             if (viewPager.currentItem != pagerAdapter.itemCount - 1) {
-                viewPager.currentItem = viewPager.currentItem + 1
                 saveStopData(viewPager.currentItem)
+                viewPager.currentItem = viewPager.currentItem + 1
             } else {
                 Toast.makeText(this, "Last page on screen!", Toast.LENGTH_LONG).show()
             }
         }
         previousButton.setOnClickListener {
             if (viewPager.currentItem != 0) {
-                viewPager.currentItem = viewPager.currentItem - 1
                 saveStopData(viewPager.currentItem)
+                viewPager.currentItem = viewPager.currentItem - 1
             } else {
                 Toast.makeText(this, "First page on screen!", Toast.LENGTH_LONG).show()
             }
@@ -89,18 +88,18 @@ class TabbedActivity : FragmentActivity() {
 
     private fun saveStopData(currentItem: Int) {
         val fragment = supportFragmentManager.findFragmentByTag("f$currentItem")
-        val view = fragment?.view
-        val busNo = view?.findViewById(R.id.bus_no) as TextInputEditText
+        val view = fragment!!.view
+        val busNo = view!!.findViewById(R.id.bus_no) as TextInputEditText
         val arrivalTime = view.findViewById(R.id.arrival_time) as TextInputEditText
         val alighting = view.findViewById(R.id.alighting_no) as TextInputEditText
         val boarded = view.findViewById(R.id.boarded_no) as TextInputEditText
         val departureTime = view.findViewById(R.id.departure_time) as TextInputEditText
-        val comments = view.findViewById(R.id.comments) as TextInputEditText
+        val comments = view.findViewById(R.id.comments_route) as TextInputEditText
         val tripStopForm = TripStopForm(
-            busNumber = busNo.text.toString().toInt(),
+            busNumber = busNo.text?.toNumericVersion() ?: 0,
             arrivalTime = arrivalTime.text.toString(),
-            alighting = alighting.text.toString().toInt(),
-            boarded = boarded.text.toString().toInt(),
+            alighting = alighting.text?.toNumericVersion() ?: 0,
+            boarded = boarded.text?.toNumericVersion() ?: 0,
             departureTime = departureTime.text.toString(),
             comments = comments.text.toString()
         )
@@ -119,34 +118,23 @@ class TabbedActivity : FragmentActivity() {
 
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = tripStopSize
-        private var busNo: TextInputEditText? = null
-        private var arrivalTime: TextInputEditText? = null
-        private var alighting: TextInputEditText? = null
-        private var boarded: TextInputEditText? = null
-        private var departureTime: TextInputEditText? = null
-        private var comments: TextInputEditText? = null
-
         override fun createFragment(position: Int): Fragment {
             val fragment = TripStopFragment()
-            val view = fragment.view
-            busNo = view?.findViewById(R.id.bus_no)
-            arrivalTime = view?.findViewById(R.id.arrival_time)
-            alighting = view?.findViewById(R.id.alighting_no)
-            boarded = view?.findViewById(R.id.boarded_no)
-            departureTime = view?.findViewById(R.id.departure_time)
-            comments = view?.findViewById(R.id.comments)
-            bindData(position)
+            val bundle = Bundle()
+            bundle.putInt("busNo", Utils.STOP_FORM_DATA["$tripId-$position"]?.busNumber!!)
+            bundle.putString(
+                "arrivalTime",
+                Utils.STOP_FORM_DATA["$tripId-$position"]?.arrivalTime!!
+            )
+            bundle.putInt("alighting", Utils.STOP_FORM_DATA["$tripId-$position"]?.alighting!!)
+            bundle.putInt("boarded", Utils.STOP_FORM_DATA["$tripId-$position"]?.boarded!!)
+            bundle.putString(
+                "departureTime",
+                Utils.STOP_FORM_DATA["$tripId-$position"]?.departureTime!!
+            )
+            bundle.putString("comments", Utils.STOP_FORM_DATA["$tripId-$position"]?.comments!!)
+            fragment.arguments = bundle
             return fragment
-
-        }
-
-        fun bindData(position: Int) {
-            busNo?.setText(Utils.STOP_FORM_DATA["$tripId-$position"]?.busNumber.toString())
-            arrivalTime?.setText(Utils.STOP_FORM_DATA["$tripId-$position"]?.arrivalTime.toString())
-            alighting?.setText(Utils.STOP_FORM_DATA["$tripId-$position"]?.alighting.toString())
-            boarded?.setText(Utils.STOP_FORM_DATA["$tripId-$position"]?.boarded.toString())
-            departureTime?.setText(Utils.STOP_FORM_DATA["$tripId-$position"]?.departureTime.toString())
-            comments?.setText(Utils.STOP_FORM_DATA["$tripId-$position"]?.comments.toString())
         }
     }
 }
