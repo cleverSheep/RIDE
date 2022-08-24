@@ -89,6 +89,10 @@ class TabbedActivity : FragmentActivity() {
             saveStopData(viewPager.currentItem)
             startActivity(Intent(this, MainActivity::class.java))
         }
+        doneButton.setOnClickListener {
+            saveStopData(viewPager.currentItem)
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 /*        submitTripsButton.setOnClickListener {
             saveStopData(viewPager.currentItem)
             tripsViewModel.postScheduledTrips(
