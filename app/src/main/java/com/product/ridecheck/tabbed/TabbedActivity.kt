@@ -114,6 +114,7 @@ class TabbedActivity : FragmentActivity() {
         val departureTime = view.findViewById(R.id.departure_time) as TextInputEditText
         val comments = view.findViewById(R.id.comments_route) as TextInputEditText
         val tripStopForm = TripStopForm(
+            Utils.STOP_FORM_DATA["$tripId-$currentItem"]?.stopName ?: "",
             busNumber = busNo.text?.toNumericVersion() ?: 0,
             arrivalTime = arrivalTime.text.toString(),
             alighting = alighting.text?.toNumericVersion() ?: 0,
