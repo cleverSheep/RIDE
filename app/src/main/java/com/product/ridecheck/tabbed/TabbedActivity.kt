@@ -2,6 +2,7 @@ package com.product.ridecheck.tabbed
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -25,7 +26,7 @@ class TabbedActivity : FragmentActivity() {
     private lateinit var nextButton: MaterialButton
     private lateinit var previousButton: MaterialButton
     private lateinit var homeButton: MaterialButton
-    private lateinit var submitTripsButton: MaterialButton
+    private lateinit var doneButton: MaterialButton
 
     private lateinit var tripId: String
     private var tripStopSize = 0
@@ -41,17 +42,16 @@ class TabbedActivity : FragmentActivity() {
 
         // Instantiate a ViewPager2 and a PagerAdapter.
         viewPager = findViewById(R.id.pager)
-        nextButton = findViewById(R.id.next_page)
-        previousButton = findViewById(R.id.previous_page)
-        homeButton = findViewById(R.id.home_button)
-        submitTripsButton = findViewById(R.id.submit_trips)
-        setClickListener()
-
         // The pager adapter, which provides the pages to the view pager widget.
         pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
-
         tripsViewModel = ViewModelProvider(this)[TripsViewModel::class.java]
+
+        nextButton = findViewById(R.id.next_page)
+        previousButton = findViewById(R.id.previous_page)
+        homeButton = findViewById(R.id.home_button)
+        doneButton = findViewById(R.id.submit_trips)
+        setClickListener()
     }
 
     private fun setClickListener() {
@@ -62,6 +62,13 @@ class TabbedActivity : FragmentActivity() {
             } else {
                 Toast.makeText(this, "Last page on screen!", Toast.LENGTH_LONG).show()
             }
+            if (viewPager.currentItem == pagerAdapter.itemCount - 2) {
+                doneButton.visibility = View.VISIBLE
+                nextButton.visibility = View.GONE
+            } else {
+                doneButton.visibility = View.GONE
+                nextButton.visibility = View.VISIBLE
+            }
         }
         previousButton.setOnClickListener {
             if (viewPager.currentItem != 0) {
@@ -69,6 +76,13 @@ class TabbedActivity : FragmentActivity() {
                 viewPager.currentItem = viewPager.currentItem - 1
             } else {
                 Toast.makeText(this, "First page on screen!", Toast.LENGTH_LONG).show()
+            }
+            if (viewPager.currentItem == pagerAdapter.itemCount - 2) {
+                doneButton.visibility = View.VISIBLE
+                nextButton.visibility = View.GONE
+            } else {
+                doneButton.visibility = View.GONE
+                nextButton.visibility = View.VISIBLE
             }
         }
         homeButton.setOnClickListener {
@@ -121,6 +135,7 @@ class TabbedActivity : FragmentActivity() {
         override fun createFragment(position: Int): Fragment {
             val fragment = TripStopFragment()
             val bundle = Bundle()
+            bundle.putString("stopName", Utils.STOP_FORM_DATA["$tripId-$position"]?.stopName!!)
             bundle.putInt("busNo", Utils.STOP_FORM_DATA["$tripId-$position"]?.busNumber!!)
             bundle.putString(
                 "arrivalTime",

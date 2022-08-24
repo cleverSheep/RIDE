@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.product.ridecheck.R
 
 class TripStopFragment : Fragment() {
+    private lateinit var stopName: TextView
     private lateinit var busNo: TextInputEditText
     private lateinit var arrivalTime: TextInputEditText
     private lateinit var alighting: TextInputEditText
@@ -27,6 +29,7 @@ class TripStopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        stopName = view.findViewById(R.id.trip_stop_name)
         busNo = view.findViewById(R.id.bus_no)
         arrivalTime = view.findViewById(R.id.arrival_time)
         alighting = view.findViewById(R.id.alighting_no)
@@ -34,6 +37,7 @@ class TripStopFragment : Fragment() {
         departureTime = view.findViewById(R.id.departure_time)
         comments = view.findViewById(R.id.comments_route)
         if (arguments != null) {
+            val stop_name = requireArguments().getString("stopName")
             val bus_no = requireArguments().getInt("busNo")
             val arrival_time = requireArguments().getString("arrivalTime")
             val alightings = requireArguments().getInt("alighting")
@@ -41,6 +45,7 @@ class TripStopFragment : Fragment() {
             val departure_time = requireArguments().getString("departureTime")
             val comment = requireArguments().getString("comments")
 
+            stopName.text = stop_name
             busNo.setText(bus_no.toString())
             arrivalTime.setText(arrival_time)
             alighting.setText(alightings.toString())

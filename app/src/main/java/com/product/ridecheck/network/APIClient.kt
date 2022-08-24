@@ -14,7 +14,7 @@ object APIClient {
 
         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
         retrofit = Retrofit.Builder()
-            .baseUrl("https://appsv3.transtrack.net/services.asmx/")
+            .baseUrl("https://apps.transtrack.net/services.asmx/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

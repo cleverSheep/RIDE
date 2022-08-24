@@ -32,6 +32,7 @@ data class TripPosted(val success: Boolean)
 
 // Form data for each trip stop
 data class TripStopForm(
+    var stopName: String = "",
     var stopId: Int = 0,
     val busNumber: Int = 0,
     val destination: String = "",

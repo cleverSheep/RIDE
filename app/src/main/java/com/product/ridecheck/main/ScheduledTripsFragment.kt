@@ -10,11 +10,7 @@ import android.widget.LinearLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.product.ridecheck.R
-import com.product.ridecheck.TripResponse
-import com.product.ridecheck.TripStop
-import com.product.ridecheck.TripStopForm
-import com.product.ridecheck.Utils
+import com.product.ridecheck.*
 import com.product.ridecheck.tabbed.TabbedActivity
 import com.product.ridecheck.viewmodels.TripsViewModel
 import org.json.JSONObject
@@ -58,17 +54,19 @@ class ScheduledTripsFragment : Fragment() {
                     if (Utils.STOP_FORM_DATA.isEmpty()) {
                         tripResponse.stops?.forEach { stop ->
                             val key = "${tripResponse.sampleId}-${stop.routeStop}"
-                            Utils.STOP_FORM_DATA[key] = TripStopForm(stopId = stop.stopId)
+                            Utils.STOP_FORM_DATA[key] = TripStopForm(stopName = stop.stopName, stopId = stop.stopId)
                         }
                     } else {
                         tripResponse.stops?.forEach { stop ->
                             val key = "${tripResponse.sampleId}-${stop.routeStop}"
                             if (!editedStopData(Utils.STOP_FORM_DATA[key])) {
-                                Utils.STOP_FORM_DATA[key] = TripStopForm(stopId = stop.stopId)
+                                Utils.STOP_FORM_DATA[key] = TripStopForm(stopName = stop.stopName, stopId = stop.stopId)
                             }
                         }
                     }
                 }
+                val submitButton = TripListViewFooter(activity as Context)
+                listOfTrips.addView(submitButton)
             }
         }
     }

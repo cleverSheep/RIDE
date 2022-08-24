@@ -3,10 +3,12 @@ package com.product.ridecheck.main
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Constraints
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.button.MaterialButton
 import com.product.ridecheck.R
@@ -144,6 +146,43 @@ class TripListStop : ConstraintLayout {
                 data.onClick?.invoke()
             }
         }
+    }
+}
+
+class TripListViewFooter : MaterialButton {
+    constructor(context: Context) : super(context) {
+        initializeView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        initializeView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        initializeView()
+    }
+
+    private fun initializeView() {
+        layoutParams =
+            Constraints.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            )
+
+        val margins = ViewGroup.MarginLayoutParams::class.java.cast(layoutParams)
+        val margin = 16
+        margins.topMargin = margin
+        margins.bottomMargin = margin + 16
+        margins.leftMargin = margin + 8
+        margins.rightMargin = margin + 8
+        layoutParams = margins
+
+        text = "Submit Trips"
+        setBackgroundColor(ContextCompat.getColor(context, R.color.dark_blue_primary))
     }
 }
 
