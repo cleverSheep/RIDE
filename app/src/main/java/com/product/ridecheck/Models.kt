@@ -34,6 +34,8 @@ data class TripPosted(val success: Boolean)
 data class TripStopForm(
     var stopName: String = "",
     var stopId: Int = 0,
+    var stopLat: Float = 0f,
+    var stopLon: Float = 0f,
     val busNumber: Int = 0,
     val destination: String = "",
     val arrivalTime: String = "",

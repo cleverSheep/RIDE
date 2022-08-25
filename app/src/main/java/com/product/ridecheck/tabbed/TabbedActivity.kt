@@ -93,15 +93,6 @@ class TabbedActivity : FragmentActivity() {
             saveStopData(viewPager.currentItem)
             startActivity(Intent(this, MainActivity::class.java))
         }
-/*        submitTripsButton.setOnClickListener {
-            saveStopData(viewPager.currentItem)
-            tripsViewModel.postScheduledTrips(
-                authorization = Utils.AUTH_CODE,
-                command = "ridecheck.savetrips",
-                JSONObject()
-            )
-            startActivity(Intent(this, MainActivity::class.java))
-        }*/
     }
 
     private fun saveStopData(currentItem: Int) {

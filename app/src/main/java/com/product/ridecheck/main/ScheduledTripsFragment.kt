@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.product.ridecheck.*
 import com.product.ridecheck.tabbed.TabbedActivity
 import com.product.ridecheck.viewmodels.TripsViewModel
+import org.json.JSONArray
 import org.json.JSONObject
 
 class ScheduledTripsFragment : Fragment() {
@@ -54,21 +55,73 @@ class ScheduledTripsFragment : Fragment() {
                     if (Utils.STOP_FORM_DATA.isEmpty()) {
                         tripResponse.stops?.forEach { stop ->
                             val key = "${tripResponse.sampleId}-${stop.routeStop}"
-                            Utils.STOP_FORM_DATA[key] = TripStopForm(stopName = stop.stopName, stopId = stop.stopId)
+                            Utils.STOP_FORM_DATA[key] =
+                                TripStopForm(
+                                    stopName = stop.stopName,
+                                    stopId = stop.stopId
+                                )
                         }
                     } else {
                         tripResponse.stops?.forEach { stop ->
                             val key = "${tripResponse.sampleId}-${stop.routeStop}"
                             if (!editedStopData(Utils.STOP_FORM_DATA[key])) {
-                                Utils.STOP_FORM_DATA[key] = TripStopForm(stopName = stop.stopName, stopId = stop.stopId)
+                                Utils.STOP_FORM_DATA[key] =
+                                    TripStopForm(
+                                        stopName = stop.stopName,
+                                        stopId = stop.stopId
+                                    )
                             }
                         }
                     }
                 }
                 val submitButton = TripListViewFooter(activity as Context)
                 listOfTrips.addView(submitButton)
+                submitButton.setOnClickListener {
+                    postTrips()
+                }
             }
         }
+    }
+
+    private fun postTrips() {
+        val tripStops = Utils.STOP_FORM_DATA
+        val trip = JSONObject()
+        var stops = JSONArray()
+        val trips = JSONArray()
+        val data = JSONObject()
+        var tripId = ""
+        tripStops.forEach { (key, tripStop) ->
+            if (key.split("-")[0] != tripId ) {
+                if (tripId != "") {
+                    trip.put("stops", stops)
+                    trips.put(trip)
+                    stops = JSONArray()
+                }
+                tripId = key.split("-")[0]
+                trip.put("tripid", tripId)
+                trip.put("vehicleNumber", tripStop.busNumber)
+            }
+            val stop = JSONObject()
+            val stopNumber = key.split("-")[1]
+            stop.put("routeStop", stopNumber)
+            stop.put("stopId", tripStop.stopId)
+            stop.put("stopLat", tripStop.stopLat)
+            stop.put("stopLon", tripStop.stopLon)
+            stop.put("arrived", tripStop.arrivalTime)
+            stop.put("departed", tripStop.departureTime)
+            stop.put("boardings", tripStop.boarded)
+            stop.put("alightings", tripStop.alighting)
+            stop.put("comments", tripStop.comments)
+            stops.put(stop)
+        }
+        trip.put("stops", stops)
+        trips.put(trip)
+        data.put("trips", trips)
+        tripsViewModel.postScheduledTrips(
+            authorization = Utils.AUTH_CODE,
+            command = "ridecheck.savetrips",
+            data = data
+        )
     }
 
     private fun bindScheduledTrips(tripResponse: TripResponse, tripStops: List<TripStop>?) {
