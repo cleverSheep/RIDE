@@ -1,14 +1,20 @@
 package com.product.ridecheck
 
-import com.product.ridecheck.main.TripStopItem
+import android.text.Editable
 
 class Utils {
     companion object {
-        const val AUTH_CODE = ""
-
+        var AUTH_CODE = ""
         /**
          * Map the "trip_id-stop_position" to TripStopForm
          */
         val STOP_FORM_DATA = HashMap<String, TripStopForm>()
+
+        fun Editable.toNumericVersion(): Int {
+            if (this.isEmpty()) {
+                return 0
+            }
+            return this.toString().toInt()
+        }
     }
 }

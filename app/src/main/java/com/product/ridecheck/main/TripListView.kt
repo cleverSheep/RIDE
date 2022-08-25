@@ -49,20 +49,19 @@ class TripListView : LinearLayout {
         margins.leftMargin = margin + 8
         margins.rightMargin = margin + 8
         layoutParams = margins
+        setPadding(0, 0, 0, 16)
     }
 
     fun bindTripData(
         date: String,
         numTrips: String,
-        tripStops: List<TripStopItem>? = emptyList()
+        stopsEntry: TripStopItem
     ) {
         removeAllViews()
         tripListHeader.setDate(date)
-        tripListHeader.setNumberTrips(numTrips)
+        tripListHeader.setNumberTrips("$numTrips stops")
         addView(tripListHeader)
-        tripStops?.forEach { tripStop ->
-            addView(TripListStop.create(context, tripStop))
-        }
+        addView(TripListStop.create(context, stopsEntry))
     }
 }
 

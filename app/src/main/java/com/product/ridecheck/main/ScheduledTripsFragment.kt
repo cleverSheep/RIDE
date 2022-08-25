@@ -143,7 +143,7 @@ class ScheduledTripsFragment : Fragment() {
         scheduledTrips.bindTripData(
             date = tripDate,
             numTrips = tripResponse.stops?.size.toString(),
-            tripStops = stops
+            stopsEntry = stops!![0]
         )
         listOfTrips.addView(scheduledTrips)
     }
