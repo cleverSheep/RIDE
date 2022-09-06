@@ -84,8 +84,8 @@ class ScheduledTripsFragment : Fragment() {
     }
 
     private fun postTrips() {
-        val tripStops = Utils.STOP_FORM_DATA
-        val trip = JSONObject()
+        val tripStops = Utils.STOP_FORM_DATA.toSortedMap(compareByDescending { it })
+        var trip = JSONObject()
         var stops = JSONArray()
         val trips = JSONArray()
         val data = JSONObject()
@@ -95,6 +95,7 @@ class ScheduledTripsFragment : Fragment() {
                 if (tripId != "") {
                     trip.put("stops", stops)
                     trips.put(trip)
+                    trip = JSONObject()
                     stops = JSONArray()
                 }
                 tripId = key.split("-")[0]
