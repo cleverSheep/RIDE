@@ -3,7 +3,7 @@ package com.product.ridecheck.tabbed
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.product.ridecheck.R
+import com.product.ridecheck.TripStop
 import com.product.ridecheck.TripStopForm
 import com.product.ridecheck.Utils
 import com.product.ridecheck.Utils.Companion.toNumericVersion
@@ -23,13 +24,16 @@ class TabbedActivity : FragmentActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var pagerAdapter: ScreenSlidePagerAdapter
 
+    private lateinit var spinner: Spinner
     private lateinit var nextButton: MaterialButton
     private lateinit var previousButton: MaterialButton
     private lateinit var homeButton: MaterialButton
     private lateinit var doneButton: MaterialButton
+    private lateinit var footerText: TextView
 
     private lateinit var tripId: String
     private var tripStopSize = 0
+    private lateinit var tripStops: List<TripStop>
 
     private lateinit var tripsViewModel: TripsViewModel
 
@@ -39,6 +43,29 @@ class TabbedActivity : FragmentActivity() {
 
         tripId = intent.getStringExtra("trip_id") as String
         tripStopSize = intent.getIntExtra("trip_stop_size", 0)
+        tripStops = Utils.TRIP_STOPS[tripId.toInt()]!!
+
+        spinner = findViewById(R.id.spinner)
+        val stops = tripStops.map { it.stopName }
+        val adapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, stops)
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                saveStopData(viewPager.currentItem)
+                viewPager.currentItem = position
+                footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+        footerText = findViewById(R.id.footer_text)
 
         // Instantiate a ViewPager2 and a PagerAdapter.
         viewPager = findViewById(R.id.pager)
@@ -59,30 +86,36 @@ class TabbedActivity : FragmentActivity() {
             if (viewPager.currentItem != pagerAdapter.itemCount - 1) {
                 saveStopData(viewPager.currentItem)
                 viewPager.currentItem = viewPager.currentItem + 1
+                footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
             } else {
                 Toast.makeText(this, "Last page on screen!", Toast.LENGTH_LONG).show()
             }
             if (viewPager.currentItem == pagerAdapter.itemCount - 2) {
                 doneButton.visibility = View.VISIBLE
                 nextButton.visibility = View.GONE
+                footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
             } else {
                 doneButton.visibility = View.GONE
                 nextButton.visibility = View.VISIBLE
+                footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
             }
         }
         previousButton.setOnClickListener {
             if (viewPager.currentItem != 0) {
                 saveStopData(viewPager.currentItem)
                 viewPager.currentItem = viewPager.currentItem - 1
+                footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
             } else {
                 Toast.makeText(this, "First page on screen!", Toast.LENGTH_LONG).show()
             }
             if (viewPager.currentItem == pagerAdapter.itemCount - 2) {
                 doneButton.visibility = View.VISIBLE
                 nextButton.visibility = View.GONE
+                footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
             } else {
                 doneButton.visibility = View.GONE
                 nextButton.visibility = View.VISIBLE
+                footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
             }
         }
         homeButton.setOnClickListener {

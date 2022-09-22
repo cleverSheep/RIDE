@@ -130,6 +130,8 @@ class ScheduledTripsFragment : Fragment() {
         val intent = Intent(activity, TabbedActivity::class.java)
         intent.putExtra("trip_id", "${tripResponse.sampleId}")
         intent.putExtra("trip_stop_size", tripResponse.stops?.size)
+
+        Utils.TRIP_STOPS[tripResponse.sampleId] = tripStops ?: emptyList()
         val scheduledTrips = TripListView(activity as Context)
         val stops = tripStops?.map {
             TripStopItem(
