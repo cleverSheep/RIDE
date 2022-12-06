@@ -90,16 +90,25 @@ class TripStopFragment : Fragment() {
             val timePickerDialog = TimePickerDialog(
                 activity,
                 { _, hourOfDay, minute ->
-                    val hour: Int
-                    val amOrPm: String
-                    if (hourOfDay > 12) {
-                        hour = hourOfDay - 12
-                        amOrPm = "PM"
-                    } else {
-                        hour = hourOfDay
-                        amOrPm = "AM"
-                    }
-                    arrivalTime.setText("$hour:$minute $amOrPm")
+                    var am_pm = ""
+                    val datetime = Calendar.getInstance()
+                    datetime[Calendar.HOUR_OF_DAY] = hourOfDay
+                    datetime[Calendar.MINUTE] = minute
+
+                    if (datetime[Calendar.AM_PM] === Calendar.AM) am_pm =
+                        "AM" else if (datetime[Calendar.AM_PM] === Calendar.PM) am_pm = "PM"
+
+                    val strHrsToShow =
+                        if (datetime[Calendar.HOUR] === 0) "12" else datetime[Calendar.HOUR].toString() + ""
+
+                    arrivalTime.setText(
+                        "${strHrsToShow}:${
+                            String.format(
+                                "%02d",
+                                datetime.get(Calendar.MINUTE)
+                            )
+                        } $am_pm"
+                    )
                 },
                 mHour,
                 mMinute,
