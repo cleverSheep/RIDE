@@ -2,11 +2,14 @@ package com.product.ridecheck.main
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +18,8 @@ import com.product.ridecheck.tabbed.TabbedActivity
 import com.product.ridecheck.viewmodels.TripsViewModel
 import org.json.JSONArray
 import org.json.JSONObject
+import java.net.InetAddress
+import java.net.UnknownHostException
 
 class ScheduledTripsFragment : Fragment() {
     private lateinit var listOfTrips: LinearLayout
@@ -39,18 +44,16 @@ class ScheduledTripsFragment : Fragment() {
             command = "ridecheck.getscheduledtrips",
             data = JSONObject().put("timestamp", "")
         )
-        getScheduledTrips()
+        getScheduledTrips(Utils.TRIPS_ARRAY)
+
     }
 
-    private fun getScheduledTrips() {
-        tripsViewModel.tripsScheduledTrips.observe(viewLifecycleOwner) { tripsArray ->
-            if (tripsArray == null) {
-                return@observe
-            }
-            if (tripsArray.trips.isEmpty()) {
-                return@observe
+    private fun getScheduledTrips(trips: TripsArray?) {
+        if (trips != null) {
+            if (trips.trips.isEmpty()) {
+                return
             } else {
-                tripsArray.trips.forEach { tripResponse ->
+                trips.trips.forEach { tripResponse ->
                     bindScheduledTrips(tripResponse, tripResponse.stops)
                     if (Utils.STOP_FORM_DATA.isEmpty()) {
                         tripResponse.stops?.forEach { stop ->
@@ -80,10 +83,58 @@ class ScheduledTripsFragment : Fragment() {
                     postTrips()
                 }
             }
+        } else {
+            tripsViewModel.tripsScheduledTrips.observe(viewLifecycleOwner) { tripsArray ->
+                Utils.TRIPS_ARRAY = tripsArray
+                if (tripsArray == null) {
+                    return@observe
+                }
+                if (tripsArray.trips.isEmpty()) {
+                    return@observe
+                } else {
+                    tripsArray.trips.forEach { tripResponse ->
+                        bindScheduledTrips(tripResponse, tripResponse.stops)
+                        if (Utils.STOP_FORM_DATA.isEmpty()) {
+                            tripResponse.stops?.forEach { stop ->
+                                val key = "${tripResponse.sampleId}-${stop.routeStop}"
+                                Utils.STOP_FORM_DATA[key] =
+                                    TripStopForm(
+                                        stopName = stop.stopName,
+                                        stopId = stop.stopId
+                                    )
+                            }
+                        } else {
+                            tripResponse.stops?.forEach { stop ->
+                                val key = "${tripResponse.sampleId}-${stop.routeStop}"
+                                if (!editedStopData(Utils.STOP_FORM_DATA[key])) {
+                                    Utils.STOP_FORM_DATA[key] =
+                                        TripStopForm(
+                                            stopName = stop.stopName,
+                                            stopId = stop.stopId
+                                        )
+                                }
+                            }
+                        }
+                    }
+                }
+                val submitButton = TripListViewFooter(activity as Context)
+                listOfTrips.addView(submitButton)
+                submitButton.setOnClickListener {
+                    postTrips()
+                }
+            }
         }
     }
 
     private fun postTrips() {
+        if (!isNetworkAvailable(activity as Context) || !isInternetAvailable()) {
+            Toast.makeText(
+                activity,
+                "Uh oh! An internet connection is required to submit the trips.",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
         val tripStops = Utils.STOP_FORM_DATA.toSortedMap(compareByDescending { it })
         var trip = JSONObject()
         var stops = JSONArray()
@@ -91,7 +142,7 @@ class ScheduledTripsFragment : Fragment() {
         val data = JSONObject()
         var tripId = ""
         tripStops.forEach { (key, tripStop) ->
-            if (key.split("-")[0] != tripId ) {
+            if (key.split("-")[0] != tripId) {
                 if (tripId != "") {
                     trip.put("stops", stops)
                     trips.put(trip)
@@ -164,6 +215,23 @@ class ScheduledTripsFragment : Fragment() {
             ) {
                 return true
             }
+        }
+        return false
+    }
+
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!
+            .isConnected
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        try {
+            val address: InetAddress = InetAddress.getByName("www.google.com")
+            return !address.equals("")
+        } catch (e: UnknownHostException) {
+            // Log error
         }
         return false
     }
