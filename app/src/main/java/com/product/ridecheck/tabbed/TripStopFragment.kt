@@ -1,6 +1,6 @@
 package com.product.ridecheck.tabbed
 
-import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +10,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.product.ridecheck.R
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 
 class TripStopFragment : Fragment() {
@@ -81,77 +85,33 @@ class TripStopFragment : Fragment() {
 
     private fun bindUI() {
         arrivalTimePicker.setOnClickListener {
-            // Get Current Time
-            val c: Calendar = Calendar.getInstance()
-            val mHour = c.get(Calendar.HOUR_OF_DAY)
-            val mMinute = c.get(Calendar.MINUTE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val current = LocalDateTime.now()
 
-            // Launch Time Picker Dialog
-            val timePickerDialog = TimePickerDialog(
-                activity,
-                { _, hourOfDay, minute ->
-                    var am_pm = ""
-                    val datetime = Calendar.getInstance()
-                    datetime[Calendar.HOUR_OF_DAY] = hourOfDay
-                    datetime[Calendar.MINUTE] = minute
-
-                    if (datetime[Calendar.AM_PM] === Calendar.AM) am_pm =
-                        "AM" else if (datetime[Calendar.AM_PM] === Calendar.PM) am_pm = "PM"
-
-                    val strHrsToShow =
-                        if (datetime[Calendar.HOUR] === 0) "12" else datetime[Calendar.HOUR].toString() + ""
-
-                    arrivalTime.setText(
-                        "${strHrsToShow}:${
-                            String.format(
-                                "%02d",
-                                datetime.get(Calendar.MINUTE)
-                            )
-                        } $am_pm"
-                    )
-                },
-                mHour,
-                mMinute,
-                false
-            )
-            timePickerDialog.show()
+                val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+                val time = current.format(formatter)
+                arrivalTime.setText(time.toString())
+            } else {
+                var date = Date()
+                val formatter = SimpleDateFormat("HH:mm a")
+                val time: String = formatter.format(date)
+                arrivalTime.setText(time)
+            }
         }
 
         departureTimePicker.setOnClickListener {
-            // Get Current Time
-            val c: Calendar = Calendar.getInstance()
-            val mHour = c.get(Calendar.HOUR_OF_DAY)
-            val mMinute = c.get(Calendar.MINUTE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val current = LocalDateTime.now()
 
-            // Launch Time Picker Dialog
-            val timePickerDialog = TimePickerDialog(
-                activity,
-                { _, hourOfDay, minute ->
-                    var am_pm = ""
-                    val datetime = Calendar.getInstance()
-                    datetime[Calendar.HOUR_OF_DAY] = hourOfDay
-                    datetime[Calendar.MINUTE] = minute
-
-                    if (datetime[Calendar.AM_PM] === Calendar.AM) am_pm =
-                        "AM" else if (datetime[Calendar.AM_PM] === Calendar.PM) am_pm = "PM"
-
-                    val strHrsToShow =
-                        if (datetime[Calendar.HOUR] === 0) "12" else datetime[Calendar.HOUR].toString() + ""
-
-                    departureTime.setText(
-                        "${strHrsToShow}:${
-                            String.format(
-                                "%02d",
-                                datetime.get(Calendar.MINUTE)
-                            )
-                        } $am_pm"
-                    )
-                },
-                mHour,
-                mMinute,
-                false
-            )
-            timePickerDialog.show()
+                val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+                val time = current.format(formatter)
+                departureTime.setText(time.toString())
+            } else {
+                var date = Date()
+                val formatter = SimpleDateFormat("HH:mm a")
+                val time: String = formatter.format(date)
+                departureTime.setText(time)
+            }
         }
 
         alightingAdd.setOnClickListener {
