@@ -10,6 +10,8 @@ class Utils {
          */
         val STOP_FORM_DATA = HashMap<String, TripStopForm>()
 
+        val STOP_FORM_LIVE_PASSENGERS = HashMap<String, Int>()
+
         val TRIP_STOPS = HashMap<Int, List<TripStop>>()
 
         var TRIPS_ARRAY: TripsArray? = null

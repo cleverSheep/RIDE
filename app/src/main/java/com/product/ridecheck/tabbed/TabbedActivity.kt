@@ -30,6 +30,8 @@ class TabbedActivity : FragmentActivity() {
     private lateinit var homeButton: MaterialButton
     private lateinit var doneButton: MaterialButton
     private lateinit var footerText: TextView
+    private lateinit var passengerLoad: TextView
+    private var livePassengerCount = 0
 
     private lateinit var tripId: String
     private var tripStopSize = 0
@@ -40,6 +42,12 @@ class TabbedActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tabbed)
+
+        TripStopFragment.liveCountListener = {
+            livePassengerCount += it
+            livePassengerCount = if (livePassengerCount < 0) 0 else livePassengerCount
+            passengerLoad.text = "$livePassengerCount passengers onboard"
+        }
 
         tripId = intent.getStringExtra("trip_id") as String
         tripStopSize = intent.getIntExtra("trip_stop_size", 0)
@@ -78,6 +86,14 @@ class TabbedActivity : FragmentActivity() {
         previousButton = findViewById(R.id.previous_page)
         homeButton = findViewById(R.id.home_button)
         doneButton = findViewById(R.id.submit_trips)
+
+        passengerLoad = findViewById(R.id.passenger_load_tv)
+        if (Utils.STOP_FORM_LIVE_PASSENGERS["$tripId"] != null) {
+            livePassengerCount = Utils.STOP_FORM_LIVE_PASSENGERS["$tripId"] ?: 0
+            passengerLoad.text = "$livePassengerCount passengers onboard"
+        } else {
+            passengerLoad.text = "0 passengers onboard"
+        }
         setClickListener()
     }
 
@@ -137,6 +153,7 @@ class TabbedActivity : FragmentActivity() {
         val boarded = view.findViewById(R.id.boarded_no) as TextInputEditText
         val departureTime = view.findViewById(R.id.departure_time) as TextInputEditText
         val comments = view.findViewById(R.id.comments_route) as TextInputEditText
+
         val tripStopForm = TripStopForm(
             Utils.STOP_FORM_DATA["$tripId-$currentItem"]?.stopName ?: "",
             busNumber = busNo.text?.toNumericVersion() ?: 0,
@@ -147,6 +164,7 @@ class TabbedActivity : FragmentActivity() {
             comments = comments.text.toString()
         )
         Utils.STOP_FORM_DATA["$tripId-$currentItem"] = tripStopForm
+        Utils.STOP_FORM_LIVE_PASSENGERS["$tripId"] = livePassengerCount
     }
 
     override fun onBackPressed() {
@@ -181,4 +199,5 @@ class TabbedActivity : FragmentActivity() {
             return fragment
         }
     }
+
 }

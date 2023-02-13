@@ -34,7 +34,6 @@ class TripStopFragment : Fragment() {
     private var alightingNo = 0
     private var boardedNo = 0
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -117,6 +116,7 @@ class TripStopFragment : Fragment() {
         alightingAdd.setOnClickListener {
             alightingNo += 1
             alighting.setText(alightingNo.toString())
+            liveCountListener?.invoke(-1)
         }
 
         alightingRemove.setOnClickListener {
@@ -125,6 +125,7 @@ class TripStopFragment : Fragment() {
             } else {
                 alightingNo -= 1
                 alighting.setText(alightingNo.toString())
+                liveCountListener?.invoke(1)
 
             }
         }
@@ -135,14 +136,20 @@ class TripStopFragment : Fragment() {
             } else {
                 boardedNo -= 1
                 boarded.setText(boardedNo.toString())
+                liveCountListener?.invoke(-1)
             }
         }
 
         boardedAdd.setOnClickListener {
             boardedNo += 1
             boarded.setText(boardedNo.toString())
+            liveCountListener?.invoke(1)
         }
 
+    }
+
+    companion object {
+        var liveCountListener: ((count: Int)->Unit)? = null
     }
 
 }

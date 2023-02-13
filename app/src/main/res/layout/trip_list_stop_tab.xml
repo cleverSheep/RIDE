@@ -18,6 +18,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bus_number"
         app:layout_constraintEnd_toEndOf="@id/bus_number"
         app:layout_constraintStart_toStartOf="@id/bus_number"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="e pleasant view dr / indianola ave, dsm" />
 
     <com.google.android.material.textfield.TextInputLayout

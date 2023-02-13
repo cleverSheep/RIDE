@@ -10,8 +10,9 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:gravity="center_horizontal"
+        android:layout_weight="0.05"
         android:text="Quick Bus Stop Select"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -20,7 +21,7 @@
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:layout_weight="0.05" />
 
     <View
         android:layout_width="match_parent"
@@ -29,7 +30,8 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="0.05"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
         android:text="Survey Entry"
@@ -37,17 +39,51 @@
         android:textStyle="bold" />
 
     <!-- activity_screen_slide.xml -->
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.7" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <View
+            android:id="@+id/left_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/passenger_load_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            tools:text="23 PASSENGERS ONBOARD" />
+
+        <View
+            android:id="@+id/right_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/footer_text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.05"
         android:gravity="center"
         android:textAlignment="center"
         android:textAllCaps="true"
