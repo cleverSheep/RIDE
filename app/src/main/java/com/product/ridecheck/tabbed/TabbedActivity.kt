@@ -147,7 +147,7 @@ class TabbedActivity : FragmentActivity() {
     private fun saveStopData(currentItem: Int) {
         val fragment = supportFragmentManager.findFragmentByTag("f$currentItem")
         val view = fragment!!.view
-        val busNo = view!!.findViewById(R.id.bus_no) as TextInputEditText
+        val busNo = view!!.findViewById(R.id.bus_number) as Spinner
         val arrivalTime = view.findViewById(R.id.arrival_time) as TextInputEditText
         val alighting = view.findViewById(R.id.alighting_no) as TextInputEditText
         val boarded = view.findViewById(R.id.boarded_no) as TextInputEditText
@@ -156,7 +156,7 @@ class TabbedActivity : FragmentActivity() {
 
         val tripStopForm = TripStopForm(
             Utils.STOP_FORM_DATA["$tripId-$currentItem"]?.stopName ?: "",
-            busNumber = busNo.text?.toNumericVersion() ?: 0,
+            busNumber = busNo.selectedItemPosition,
             arrivalTime = arrivalTime.text.toString(),
             alighting = alighting.text?.toNumericVersion() ?: 0,
             boarded = boarded.text?.toNumericVersion() ?: 0,

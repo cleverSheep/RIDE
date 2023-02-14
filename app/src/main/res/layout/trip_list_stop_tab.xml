@@ -21,31 +21,19 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="e pleasant view dr / indianola ave, dsm" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <Spinner
         android:id="@+id/bus_number"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:hint="Bus Number"
         android:textColorHint="@color/black"
         app:boxStrokeColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/arrival"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:layout_editor_absoluteX="24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/bus_no"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:singleLine="true"
-            android:textColor="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <LinearLayout
         android:id="@+id/arrival"
