@@ -36,11 +36,15 @@ data class TripStopForm(
     var stopId: Int = 0,
     var stopLat: Float = 0f,
     var stopLon: Float = 0f,
+    val busNumberIndex: Int = 0,
     val busNumber: Int = 0,
     val destination: String = "",
     val arrivalTime: String = "",
     val alighting: Int = 0,
     val boarded: Int = 0,
     val departureTime: String = "",
+    val usedWheelchairRamp: Boolean = false,
+    val commonActivityIndex: Int = 0,
+    val commonActivity: String = "",
     val comments: String = ""
 ) : Serializable

@@ -152,15 +152,21 @@ class TabbedActivity : FragmentActivity() {
         val alighting = view.findViewById(R.id.alighting_no) as TextInputEditText
         val boarded = view.findViewById(R.id.boarded_no) as TextInputEditText
         val departureTime = view.findViewById(R.id.departure_time) as TextInputEditText
+        val usedWheelchairRamp = view.findViewById(R.id.ada_checkbox) as CheckBox
+        val commonActivitySpinner = view.findViewById(R.id.common_activity_spinner) as Spinner
         val comments = view.findViewById(R.id.comments_route) as TextInputEditText
 
         val tripStopForm = TripStopForm(
-            Utils.STOP_FORM_DATA["$tripId-$currentItem"]?.stopName ?: "",
-            busNumber = busNo.selectedItemPosition,
+            stopName = Utils.STOP_FORM_DATA["$tripId-$currentItem"]?.stopName ?: "",
+            busNumberIndex = busNo.selectedItemPosition,
+            busNumber = busNo.selectedItem.toString().toIntOrNull() ?: 0,
             arrivalTime = arrivalTime.text.toString(),
             alighting = alighting.text?.toNumericVersion() ?: 0,
             boarded = boarded.text?.toNumericVersion() ?: 0,
             departureTime = departureTime.text.toString(),
+            usedWheelchairRamp = usedWheelchairRamp.isChecked,
+            commonActivityIndex = commonActivitySpinner.selectedItemPosition,
+            commonActivity = commonActivitySpinner.selectedItem.toString(),
             comments = comments.text.toString()
         )
         Utils.STOP_FORM_DATA["$tripId-$currentItem"] = tripStopForm
@@ -183,7 +189,7 @@ class TabbedActivity : FragmentActivity() {
             val fragment = TripStopFragment()
             val bundle = Bundle()
             bundle.putString("stopName", Utils.STOP_FORM_DATA["$tripId-$position"]?.stopName!!)
-            bundle.putInt("busNo", Utils.STOP_FORM_DATA["$tripId-$position"]?.busNumber!!)
+            bundle.putInt("busNo", Utils.STOP_FORM_DATA["$tripId-$position"]?.busNumberIndex!!)
             bundle.putString(
                 "arrivalTime",
                 Utils.STOP_FORM_DATA["$tripId-$position"]?.arrivalTime!!
@@ -194,6 +200,8 @@ class TabbedActivity : FragmentActivity() {
                 "departureTime",
                 Utils.STOP_FORM_DATA["$tripId-$position"]?.departureTime!!
             )
+            bundle.putBoolean("usesWheelchairRamp", Utils.STOP_FORM_DATA["$tripId-$position"]?.usedWheelchairRamp!!)
+            bundle.putInt("commonActivity", Utils.STOP_FORM_DATA["$tripId-$position"]?.commonActivityIndex!!)
             bundle.putString("comments", Utils.STOP_FORM_DATA["$tripId-$position"]?.comments!!)
             fragment.arguments = bundle
             return fragment
