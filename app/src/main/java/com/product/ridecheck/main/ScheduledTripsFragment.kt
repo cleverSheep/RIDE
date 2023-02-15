@@ -57,7 +57,7 @@ class ScheduledTripsFragment : Fragment() {
                 return
             } else {
                 trips.trips.forEach { tripResponse ->
-                    bindScheduledTrips(tripResponse, tripResponse.stops)
+                    bindScheduledTrips(tripResponse, tripResponse.stops, false)
                     if (Utils.STOP_FORM_DATA.isEmpty()) {
                         tripResponse.stops?.forEach { stop ->
                             val key = "${tripResponse.sampleId}-${stop.routeStop}"
@@ -96,7 +96,7 @@ class ScheduledTripsFragment : Fragment() {
                     return@observe
                 } else {
                     tripsArray.trips.forEach { tripResponse ->
-                        bindScheduledTrips(tripResponse, tripResponse.stops)
+                        bindScheduledTrips(tripResponse, tripResponse.stops, false)
                         if (Utils.STOP_FORM_DATA.isEmpty()) {
                             tripResponse.stops?.forEach { stop ->
                                 val key = "${tripResponse.sampleId}-${stop.routeStop}"
@@ -124,6 +124,8 @@ class ScheduledTripsFragment : Fragment() {
                 listOfTrips.addView(submitButton)
                 submitButton.setOnClickListener {
                     postTrips()
+                    Toast.makeText(context, "Trip data has been submitted!", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -154,7 +156,7 @@ class ScheduledTripsFragment : Fragment() {
                 }
                 tripId = key.split("-")[0]
                 trip.put("tripid", tripId)
-                trip.put("vehicleNumber", tripStop.busNumber)
+                trip.put("vehicleNumber", Utils.TRIP_VEHICLE_NUMBER[tripId.toInt()])
             }
             val stop = JSONObject()
             val stopNumber = key.split("-")[1]
@@ -179,10 +181,15 @@ class ScheduledTripsFragment : Fragment() {
         )
     }
 
-    private fun bindScheduledTrips(tripResponse: TripResponse, tripStops: List<TripStop>?) {
+    private fun bindScheduledTrips(
+        tripResponse: TripResponse,
+        tripStops: List<TripStop>?,
+        tripsNull: Boolean
+    ) {
         val tripDate = tripResponse.tripDate.split(" ")[0]
         val intent = Intent(activity, TabbedActivity::class.java)
-        intent.putExtra("trip_id", "${tripResponse.sampleId}")
+        val trip_id = tripResponse.sampleId
+        intent.putExtra("trip_id", "$trip_id")
         intent.putExtra("trip_stop_size", tripResponse.stops?.size)
 
         Utils.TRIP_STOPS[tripResponse.sampleId] = tripStops ?: emptyList()
@@ -194,13 +201,38 @@ class ScheduledTripsFragment : Fragment() {
                     tripResponse.routeName,
                     tripResponse.startTime,
                     tripResponse.doorLocation
-                )
-            ) { activity?.startActivity(intent) }
+                ),
+                onEnterTripData = { activity?.startActivity(intent) },
+                onEnterVehicleNumber = { vehicleNumber ->
+                    if (!tripsNull) {
+                        Utils.TRIP_VEHICLE_NUMBER[trip_id] = vehicleNumber
+                        Toast.makeText(
+                            activity as Context,
+                            "vehicle number changed: ${Utils.TRIP_VEHICLE_NUMBER[trip_id]}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                }
+            )
         }
+        /**
+         * TODO: Replace hardcoded vehicle numbers with data fetched from an api
+         */
         scheduledTrips.bindTripData(
             date = tripDate,
             numTrips = tripResponse.stops?.size.toString(),
-            stopsEntry = stops!![0]
+            stopsEntry = stops!![0],
+            arrayOf(
+                "1215",
+                "1316",
+                "1417",
+                "1518",
+                "1619",
+                "2213",
+                "2217",
+                "2219"
+            )
         )
         listOfTrips.addView(scheduledTrips)
     }

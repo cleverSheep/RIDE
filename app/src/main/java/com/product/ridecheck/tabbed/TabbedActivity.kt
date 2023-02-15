@@ -136,11 +136,11 @@ class TabbedActivity : FragmentActivity() {
         }
         homeButton.setOnClickListener {
             saveStopData(viewPager.currentItem)
-            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
         doneButton.setOnClickListener {
             saveStopData(viewPager.currentItem)
-            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 

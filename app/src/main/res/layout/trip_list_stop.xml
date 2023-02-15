@@ -25,9 +25,34 @@
         android:layout_marginHorizontal="24dp"
         android:backgroundTint="#193E6E"
         android:text="Enter Trip Data"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/enter_vehicle_number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trip_list_stop_header" />
+
+    <TextView
+        android:id="@+id/enter_vehicle_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Vehicle Number"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/trip_bus_number_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trip_list_stop_button" />
+
+    <Spinner
+        android:id="@+id/trip_bus_number_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_vehicle_number" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
