@@ -34,7 +34,7 @@
         android:id="@+id/enter_vehicle_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Vehicle Number"
+        android:text="Select Vehicle Number"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"

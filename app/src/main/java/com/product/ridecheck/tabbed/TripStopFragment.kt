@@ -18,7 +18,6 @@ import java.util.*
 
 class TripStopFragment : Fragment() {
     private lateinit var stopName: TextView
-    private lateinit var busNo: Spinner
     private lateinit var arrivalTime: TextInputEditText
     private lateinit var arrivalTimePicker: ImageButton
     private lateinit var alighting: TextInputEditText
@@ -47,7 +46,6 @@ class TripStopFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         stopName = view.findViewById(R.id.trip_stop_name)
-        busNo = view.findViewById(R.id.bus_number)
         arrivalTime = view.findViewById(R.id.arrival_time)
         arrivalTimePicker = view.findViewById(R.id.arrival_time_picker)
         alighting = view.findViewById(R.id.alighting_no)
@@ -63,7 +61,6 @@ class TripStopFragment : Fragment() {
         comments = view.findViewById(R.id.comments_route)
         if (arguments != null) {
             val stop_name = requireArguments().getString("stopName")
-            val bus_no = requireArguments().getInt("busNo")
             val arrival_time = requireArguments().getString("arrivalTime")
             val alightings = requireArguments().getInt("alighting")
             val boarding = requireArguments().getInt("boarded")
@@ -73,24 +70,6 @@ class TripStopFragment : Fragment() {
             val comment = requireArguments().getString("comments")
 
             stopName.text = stop_name
-            /**
-             * SAMPLE BUS STOPS
-             * TODO: UPDATE WITH BACKEND DATA
-             */
-            val busNumbers = arrayOf(
-                "1215",
-                "1316",
-                "1417",
-                "1518",
-                "1619",
-                "2213",
-                "2217",
-                "2219"
-            )
-            val adapter =
-                ArrayAdapter(activity as Context, android.R.layout.simple_spinner_dropdown_item, busNumbers)
-            busNo.adapter = adapter
-            busNo.setSelection(bus_no)
 
             arrivalTime.setText(arrival_time)
             alighting.setText(alightings.toString())

@@ -147,8 +147,7 @@ class TabbedActivity : FragmentActivity() {
     private fun saveStopData(currentItem: Int) {
         val fragment = supportFragmentManager.findFragmentByTag("f$currentItem")
         val view = fragment!!.view
-        val busNo = view!!.findViewById(R.id.bus_number) as Spinner
-        val arrivalTime = view.findViewById(R.id.arrival_time) as TextInputEditText
+        val arrivalTime = view!!.findViewById(R.id.arrival_time) as TextInputEditText
         val alighting = view.findViewById(R.id.alighting_no) as TextInputEditText
         val boarded = view.findViewById(R.id.boarded_no) as TextInputEditText
         val departureTime = view.findViewById(R.id.departure_time) as TextInputEditText
@@ -158,8 +157,6 @@ class TabbedActivity : FragmentActivity() {
 
         val tripStopForm = TripStopForm(
             stopName = Utils.STOP_FORM_DATA["$tripId-$currentItem"]?.stopName ?: "",
-            busNumberIndex = busNo.selectedItemPosition,
-            busNumber = busNo.selectedItem.toString().toIntOrNull() ?: 0,
             arrivalTime = arrivalTime.text.toString(),
             alighting = alighting.text?.toNumericVersion() ?: 0,
             boarded = boarded.text?.toNumericVersion() ?: 0,
@@ -189,7 +186,6 @@ class TabbedActivity : FragmentActivity() {
             val fragment = TripStopFragment()
             val bundle = Bundle()
             bundle.putString("stopName", Utils.STOP_FORM_DATA["$tripId-$position"]?.stopName!!)
-            bundle.putInt("busNo", Utils.STOP_FORM_DATA["$tripId-$position"]?.busNumberIndex!!)
             bundle.putString(
                 "arrivalTime",
                 Utils.STOP_FORM_DATA["$tripId-$position"]?.arrivalTime!!

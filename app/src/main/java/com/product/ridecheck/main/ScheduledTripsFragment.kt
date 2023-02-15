@@ -206,11 +206,6 @@ class ScheduledTripsFragment : Fragment() {
                 onEnterVehicleNumber = { vehicleNumber ->
                     if (!tripsNull) {
                         Utils.TRIP_VEHICLE_NUMBER[trip_id] = vehicleNumber
-                        Toast.makeText(
-                            activity as Context,
-                            "vehicle number changed: ${Utils.TRIP_VEHICLE_NUMBER[trip_id]}",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
 
                 }

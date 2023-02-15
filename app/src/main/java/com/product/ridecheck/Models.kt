@@ -36,8 +36,6 @@ data class TripStopForm(
     var stopId: Int = 0,
     var stopLat: Float = 0f,
     var stopLon: Float = 0f,
-    val busNumberIndex: Int = 0,
-    val busNumber: Int = 0,
     val destination: String = "",
     val arrivalTime: String = "",
     val alighting: Int = 0,
