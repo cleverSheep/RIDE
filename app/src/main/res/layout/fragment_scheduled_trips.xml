@@ -5,8 +5,28 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/trips"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/trips"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/no_trips_assigned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="64dp"
+            android:drawableTop="@drawable/no_trips_assigned"
+            android:text="NO TRIPS ASSIGNED"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>

@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ class ScheduledTripsFragment : Fragment() {
     private lateinit var listOfTrips: LinearLayout
     private lateinit var scroll: NestedScrollView
     private lateinit var tripsViewModel: TripsViewModel
+    private lateinit var noTripsAssigned: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +43,7 @@ class ScheduledTripsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         listOfTrips = view.findViewById(R.id.trips)
         scroll = view.findViewById(R.id.nested_scroll)
+        noTripsAssigned = view.findViewById(R.id.no_trips_assigned)
         tripsViewModel = ViewModelProvider(this)[TripsViewModel::class.java]
         tripsViewModel.getScheduledTrips(
             authorization = Utils.AUTH_CODE,
@@ -54,8 +57,12 @@ class ScheduledTripsFragment : Fragment() {
     private fun getScheduledTrips(trips: TripsArray?) {
         if (trips != null) {
             if (trips.trips.isEmpty()) {
+                noTripsAssigned.visibility = View.VISIBLE
+                listOfTrips.visibility = View.GONE
                 return
             } else {
+                noTripsAssigned.visibility = View.GONE
+                listOfTrips.visibility = View.VISIBLE
                 trips.trips.forEach { tripResponse ->
                     bindScheduledTrips(tripResponse, tripResponse.stops, false)
                     if (Utils.STOP_FORM_DATA.isEmpty()) {
@@ -90,11 +97,17 @@ class ScheduledTripsFragment : Fragment() {
             tripsViewModel.tripsScheduledTrips.observe(viewLifecycleOwner) { tripsArray ->
                 Utils.TRIPS_ARRAY = tripsArray
                 if (tripsArray == null) {
+                    noTripsAssigned.visibility = View.VISIBLE
+                    listOfTrips.visibility = View.GONE
                     return@observe
                 }
                 if (tripsArray.trips.isEmpty()) {
+                    noTripsAssigned.visibility = View.VISIBLE
+                    listOfTrips.visibility = View.GONE
                     return@observe
                 } else {
+                    noTripsAssigned.visibility = View.GONE
+                    listOfTrips.visibility = View.VISIBLE
                     tripsArray.trips.forEach { tripResponse ->
                         bindScheduledTrips(tripResponse, tripResponse.stops, false)
                         if (Utils.STOP_FORM_DATA.isEmpty()) {
