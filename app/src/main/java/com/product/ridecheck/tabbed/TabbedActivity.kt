@@ -106,7 +106,7 @@ class TabbedActivity : FragmentActivity() {
             } else {
                 Toast.makeText(this, "Last page on screen!", Toast.LENGTH_LONG).show()
             }
-            if (viewPager.currentItem == pagerAdapter.itemCount - 2) {
+            if (viewPager.currentItem == pagerAdapter.itemCount - 1) {
                 doneButton.visibility = View.VISIBLE
                 nextButton.visibility = View.GONE
                 footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
@@ -124,7 +124,7 @@ class TabbedActivity : FragmentActivity() {
             } else {
                 Toast.makeText(this, "First page on screen!", Toast.LENGTH_LONG).show()
             }
-            if (viewPager.currentItem == pagerAdapter.itemCount - 2) {
+            if (viewPager.currentItem == pagerAdapter.itemCount -1) {
                 doneButton.visibility = View.VISIBLE
                 nextButton.visibility = View.GONE
                 footerText.text = "${viewPager.currentItem + 1}/$tripStopSize"
@@ -157,6 +157,7 @@ class TabbedActivity : FragmentActivity() {
 
         val tripStopForm = TripStopForm(
             stopName = Utils.STOP_FORM_DATA["$tripId-$currentItem"]?.stopName ?: "",
+            stopId = Utils.STOP_FORM_DATA["$tripId-$currentItem"]?.stopId ?: 0,
             arrivalTime = arrivalTime.text.toString(),
             alighting = alighting.text?.toNumericVersion() ?: 0,
             boarded = boarded.text?.toNumericVersion() ?: 0,
