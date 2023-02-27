@@ -4,14 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.product.ridecheck.TripPosted
-import com.product.ridecheck.TripsArray
+import com.product.ridecheck.Route
 import com.product.ridecheck.repositories.TripsRepository
 import org.json.JSONObject
 
 class TripsViewModel(application: Application) : AndroidViewModel(application) {
     private var tripsRepository: TripsRepository = TripsRepository()
     private var _tripsPostSuccess: LiveData<TripPosted?> = tripsRepository.tripsPostSuccess
-    private var _tripsScheduledTrips: LiveData<TripsArray?> = tripsRepository.tripsScheduledTrips
+    private var _tripsScheduledTrips: LiveData<Route?> = tripsRepository.tripsScheduledTrips
 
     val tripsPostSuccess = _tripsPostSuccess
     val tripsScheduledTrips = _tripsScheduledTrips

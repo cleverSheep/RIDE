@@ -2,7 +2,7 @@ package com.product.ridecheck.repositories
 
 import androidx.lifecycle.MutableLiveData
 import com.product.ridecheck.TripPosted
-import com.product.ridecheck.TripsArray
+import com.product.ridecheck.Route
 import com.product.ridecheck.network.APIClient
 import com.product.ridecheck.network.TripsAPI
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -16,7 +16,7 @@ import retrofit2.Response
 
 class TripsRepository {
     private val _tripsPostSuccess = MutableLiveData<TripPosted?>()
-    private val _scheduledTrips = MutableLiveData<TripsArray?>()
+    private val _scheduledTrips = MutableLiveData<Route?>()
 
     val tripsPostSuccess = _tripsPostSuccess
     val tripsScheduledTrips = _scheduledTrips
@@ -54,16 +54,16 @@ class TripsRepository {
             e.printStackTrace()
         }
         retrofit.getScheduledTrips(requestBody!!).enqueue(
-            object : Callback<TripsArray> {
+            object : Callback<Route> {
                 override fun onResponse(
-                    call: Call<TripsArray>?,
-                    response: Response<TripsArray>?
+                    call: Call<Route>?,
+                    response: Response<Route>?
                 ) {
                     val trips = response!!.body()
                     _scheduledTrips.postValue(trips)
                 }
 
-                override fun onFailure(call: Call<TripsArray>?, t: Throwable?) {
+                override fun onFailure(call: Call<Route>?, t: Throwable?) {
                     _scheduledTrips.postValue(null)
                 }
 

@@ -54,17 +54,20 @@ class ScheduledTripsFragment : Fragment() {
 
     }
 
-    private fun getScheduledTrips(trips: TripsArray?) {
-        if (trips != null) {
-            if (trips.trips.isEmpty()) {
+    private fun getScheduledTrips(route: Route?) {
+        if (route != null) {
+            if (route.trips.isEmpty()) {
                 noTripsAssigned.visibility = View.VISIBLE
                 listOfTrips.visibility = View.GONE
                 return
             } else {
                 noTripsAssigned.visibility = View.GONE
                 listOfTrips.visibility = View.VISIBLE
-                trips.trips.forEach { tripResponse ->
-                    bindScheduledTrips(tripResponse, tripResponse.stops, false)
+                route.trips.forEach { tripResponse ->
+                    val vehicleNumbers = route.vehicles.map {
+                        it.vehicleNumber
+                    }
+                    bindScheduledTrips(tripResponse, tripResponse.stops, vehicleNumbers, false)
                     if (Utils.STOP_FORM_DATA.isEmpty()) {
                         tripResponse.stops?.forEach { stop ->
                             val key = "${tripResponse.sampleId}-${stop.routeStop}"
@@ -109,7 +112,10 @@ class ScheduledTripsFragment : Fragment() {
                     noTripsAssigned.visibility = View.GONE
                     listOfTrips.visibility = View.VISIBLE
                     tripsArray.trips.forEach { tripResponse ->
-                        bindScheduledTrips(tripResponse, tripResponse.stops, false)
+                        val vehicleNumbers = tripsArray.vehicles.map {
+                            it.vehicleNumber
+                        }
+                        bindScheduledTrips(tripResponse, tripResponse.stops, vehicleNumbers!!, false)
                         if (Utils.STOP_FORM_DATA.isEmpty()) {
                             tripResponse.stops?.forEach { stop ->
                                 val key = "${tripResponse.sampleId}-${stop.routeStop}"
@@ -197,6 +203,7 @@ class ScheduledTripsFragment : Fragment() {
     private fun bindScheduledTrips(
         tripResponse: TripResponse,
         tripStops: List<TripStop>?,
+        vehicleNumbers: List<String>,
         tripsNull: Boolean
     ) {
         val tripDate = tripResponse.tripDate.split(" ")[0]
@@ -231,16 +238,7 @@ class ScheduledTripsFragment : Fragment() {
             date = tripDate,
             numTrips = tripResponse.stops?.size.toString(),
             stopsEntry = stops!![0],
-            arrayOf(
-                "1215",
-                "1316",
-                "1417",
-                "1518",
-                "1619",
-                "2213",
-                "2217",
-                "2219"
-            )
+            vehicleNumbers.toTypedArray()
         )
         listOfTrips.addView(scheduledTrips)
     }

@@ -19,7 +19,7 @@ class Utils {
 
         val TRIP_STOPS = HashMap<Int, List<TripStop>>()
 
-        var TRIPS_ARRAY: TripsArray? = null
+        var TRIPS_ARRAY: Route? = null
 
         fun Editable.toNumericVersion(): Int {
             if (this.isEmpty()) {

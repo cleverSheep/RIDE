@@ -8,7 +8,9 @@ data class UserAuth(val authorization: String)
 /**
  * Response after fetching for scheduled trips
  */
-data class TripsArray(
+
+data class Route(
+    val vehicles: List<VehicleResponse>,
     val trips: List<TripResponse>
 )
 
@@ -23,6 +25,10 @@ data class TripResponse(
     val vehicleType: String,
     val doorLocation: String,
     val stops: List<TripStop>?
+)
+
+data class VehicleResponse(
+    val vehicleNumber: String
 )
 
 data class TripStop(val routeStop: Int, val stopName: String, val stopId: Int)
